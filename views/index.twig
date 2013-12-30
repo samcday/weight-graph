@@ -1,0 +1,68 @@
+<html>
+<head>
+    <link rel="stylesheet" href="bower_components/nvd3/nv.d3.css">
+</head>
+<body>
+<div id="chart">
+    <svg width=500 height=500></svg>
+</div>
+
+<script src="bower_components/underscore/underscore.js"></script>
+<script src="bower_components/gauss/gauss.min.js"></script>
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/nvd3/nv.d3.js"></script>
+
+<script>
+    d3.json("/weight", function(data) {
+        var chartData = [];
+
+        var timeSeries = new gauss.TimeSeries();
+        data.forEach(function(item) {
+            timeSeries.push([item.timestamp, item.weight]);
+        });
+
+        chartData.push({
+            key: "Weight",
+            color: "#eee",
+            values: data.map(function(item) {
+                return {x: item.timestamp, y: item.weight}
+            })
+        });
+
+        var ewmaPeriod = 14;
+        var padding = [];
+        for(var i = 0; i < ewmaPeriod - 1; i++) padding.push(timeSeries.values()[0]);
+        var smoothed = new gauss.Vector(padding.concat(timeSeries.values())).ema(ewmaPeriod);
+        var smoothedData = _.zip(timeSeries.times(), smoothed);
+        chartData.push({
+            key: "Smoothed",
+            color: "#333",
+            values: smoothedData.map(function(item) {
+                return {x: item[0], y: item[1]}
+            })
+        })
+
+        nv.addGraph(function() {
+            var chart = nv.models.lineChart();
+
+            chart.xAxis
+                .axisLabel("Date")
+                .tickFormat(function(d) { return d3.time.format('%x')(new Date(d)) });
+            chart.yAxis
+                .axisLabel("Weight (kg)")
+                .tickFormat(d3.format(".01f"));
+
+            d3.select("#chart svg")
+                .datum(chartData)
+                .transition()
+                    .duration(500)
+                .call(chart);
+        });
+
+        timeSeries.values().split(function() {
+
+        });
+    });
+</script>
+</body>
+</html>

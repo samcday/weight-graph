@@ -1,0 +1,21 @@
+{
+    
+    "require": {
+        "deresh/sfyaml": "dev-master",
+    
+        
+    "madewithlove/runkeeper": "0.3.*",
+    
+        
+    "silex/silex": "~1.1",
+    
+        
+    "nesbot/Carbon": "*",
+    
+        
+    "twig/twig": ">=1.8,<2.0-dev",
+    
+        
+    "vlucas/phpdotenv": "*"
+    }
+}

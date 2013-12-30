@@ -1,0 +1,22 @@
+{
+  "name": "weight-graph",
+  "version": "0.0.0",
+  "authors": [
+    "samcday <me@samcday.com.au>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "gauss": "~0.2.9",
+    "moment": "~2.5.0",
+    "nvd3": "~1.1.14-beta",
+    "underscore": "~1.5.2"
+  }
+}
